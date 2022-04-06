@@ -16,10 +16,7 @@
 
 package org.apache.spark.sql.delta.sources
 
-import java.util.Locale
-
 import scala.collection.JavaConverters._
-import scala.collection.mutable
 import scala.util.{Failure, Success, Try}
 
 // scalastyle:off import.ordering.noEmptyLine
@@ -170,7 +167,6 @@ class DeltaDataSource
       DeltaOptions.verifyOptions(CaseInsensitiveMap(parameters))
 
       val timeTravelByParams = DeltaDataSource.getTimeTravelVersion(parameters)
-      var cdcOptions: mutable.Map[String, String] = mutable.Map.empty
 
       val dfOptions: Map[String, String] =
         if (sqlContext.sparkSession.sessionState.conf.getConf(
@@ -184,7 +180,7 @@ class DeltaDataSource
         new Path(maybePath),
         timeTravelOpt = timeTravelByParams,
         options = dfOptions,
-        cdcOptions = new CaseInsensitiveStringMap(cdcOptions.asJava)
+        cdcOptions = new CaseInsensitiveStringMap(Map.empty[String, String].asJava)
       ).toBaseRelation
     }
   }
